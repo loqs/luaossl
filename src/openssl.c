@@ -3265,11 +3265,15 @@ EXPORT int luaopen__openssl(lua_State *L) {
 	lua_pushstring(L, OPENSSL_VERSION_TEXT);
 	lua_setfield(L, -2, "VERSION_TEXT");
 
+#ifdef SHLIB_VERSION_HISTORY
 	lua_pushstring(L, SHLIB_VERSION_HISTORY);
 	lua_setfield(L, -2, "SHLIB_VERSION_HISTORY");
+#endif
 
+#ifdef SHLIB_VERSION_NUMBER
 	lua_pushstring(L, SHLIB_VERSION_NUMBER);
 	lua_setfield(L, -2, "SHLIB_VERSION_NUMBER");
+#endif
 
 	return 1;
 } /* luaopen__openssl() */
@@ -5384,7 +5388,9 @@ static void pk_luainit(lua_State *L, _Bool reset) {
 
 static const auxL_IntegerReg pk_rsa_pad_opts[] = {
 	{ "RSA_PKCS1_PADDING", RSA_PKCS1_PADDING }, // PKCS#1 padding
+#if RSA_SSLV23_PADDING
 	{ "RSA_SSLV23_PADDING", RSA_SSLV23_PADDING }, // SSLv23 padding
+#endif
 	{ "RSA_NO_PADDING", RSA_NO_PADDING }, // no padding
 	{ "RSA_PKCS1_OAEP_PADDING", RSA_PKCS1_OAEP_PADDING }, // OAEP padding (encrypt and decrypt only)
 	{ "RSA_X931_PADDING", RSA_X931_PADDING }, // (signature operations only)
